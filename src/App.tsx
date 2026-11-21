@@ -911,10 +911,10 @@ function NotFound({
 export default function App() {
   const route = useRoute()
   const [search, setSearch] = useState(false)
-  const [theme, setTheme] = useState(() => localStorage.getItem('aperture-theme') || 'light')
+  const [theme, setTheme] = useState(() => localStorage.getItem('kamal-docs-theme') || 'dark')
   useEffect(() => {
     document.documentElement.dataset.theme = theme
-    localStorage.setItem('aperture-theme', theme)
+    localStorage.setItem('kamal-docs-theme', theme)
   }, [theme])
   useEffect(() => {
     const key = (e: KeyboardEvent) => {

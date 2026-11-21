@@ -24,29 +24,28 @@ type ShootingStar = {
   tint: string
 }
 
-type MoonSpec = {
-  radius: number
-  distance: number
-  speed: number
+type DaylightMote = {
+  x: number
+  y: number
+  vx: number
+  vy: number
+  r: number
+  baseAlpha: number
   phase: number
-  color: string
+  isAccent: boolean
 }
 
-type PlanetSpec = {
-  name: string
-  semiMajor: number
-  semiMinor: number
-  tilt: number
-  speed: number
-  angle: number
-  radius: number
-  color: string
-  shadowColor: string
-  atmosphere: string
-  hasRings?: boolean
-  ringColor?: string
-  hasReticle?: boolean
-  moons?: MoonSpec[]
+type SolarStreak = {
+  x: number
+  y: number
+  vx: number
+  vy: number
+  curve: number
+  length: number
+  age: number
+  maxAge: number
+  width: number
+  isAccent: boolean
 }
 
 const STAR_COLORS = ['#ffffff', '#e8f1ff', '#fff4e4', '#d6e6ff']
@@ -96,7 +95,7 @@ export function CosmicBackground({ theme }: { theme: string }) {
     const spawnShootingStar = (burst = false) => {
       const startX = Math.random() * (width * 0.85) + width * 0.1
       const startY = Math.random() * (height * 0.42) - 20
-      const angleDeg = 145 + Math.random() * 24 // natural diagonal entry (down-left) or rightwards
+      const angleDeg = 145 + Math.random() * 24
       const goRight = Math.random() > 0.35
       const rad = ((goRight ? 22 + Math.random() * 24 : angleDeg) * Math.PI) / 180
       const speed = (burst ? 10.5 : 8.5) + Math.random() * 5.5
@@ -115,109 +114,53 @@ export function CosmicBackground({ theme }: { theme: string }) {
       })
     }
 
-    // Spawn one immediately so dark mode feels alive right away
     spawnShootingStar()
 
-    // --- LIGHT MODE STATE: Moving Planets on Elliptical Orbits ---
-    const planets: PlanetSpec[] = [
-      {
-        name: 'Ares-I',
-        semiMajor: 135,
-        semiMinor: 64,
-        tilt: -0.24,
-        speed: 0.0085,
-        angle: 0.8,
-        radius: 5.5,
-        color: '#ff5c35',
-        shadowColor: '#8f2710',
-        atmosphere: 'rgba(255, 92, 53, 0.16)',
-      },
-      {
-        name: 'Terra-II',
-        semiMajor: 235,
-        semiMinor: 112,
-        tilt: -0.24,
-        speed: 0.0052,
-        angle: 2.3,
-        radius: 8.5,
-        color: '#2b6dff',
-        shadowColor: '#102b6e',
-        atmosphere: 'rgba(43, 109, 255, 0.15)',
-        moons: [
-          {
-            radius: 2.2,
-            distance: 18,
-            speed: 0.034,
-            phase: 0.5,
-            color: '#6c7069',
-          },
-        ],
-      },
-      {
-        name: 'Kronos-III',
-        semiMajor: 360,
-        semiMinor: 168,
-        tilt: -0.24,
-        speed: 0.0033,
-        angle: 4.1,
-        radius: 12,
-        color: '#e07a3c',
-        shadowColor: '#6e3412',
-        atmosphere: 'rgba(224, 122, 60, 0.14)',
-        hasRings: true,
-        ringColor: 'rgba(19, 21, 18, 0.28)',
-      },
-      {
-        name: 'Zephyr-IV',
-        semiMajor: 495,
-        semiMinor: 228,
-        tilt: -0.24,
-        speed: 0.0022,
-        angle: 5.4,
-        radius: 9.5,
-        color: '#7b61ff',
-        shadowColor: '#31207a',
-        atmosphere: 'rgba(123, 97, 255, 0.14)',
-        moons: [
-          { radius: 2.0, distance: 17, speed: 0.028, phase: 1.1, color: '#7b61ff' },
-          { radius: 1.6, distance: 24, speed: -0.019, phase: 3.4, color: '#6c7069' },
-        ],
-      },
-      {
-        name: 'Vanguard-V',
-        semiMajor: 640,
-        semiMinor: 295,
-        tilt: -0.24,
-        speed: 0.0015,
-        angle: 1.65,
-        radius: 7.2,
-        color: '#00a981',
-        shadowColor: '#044a39',
-        atmosphere: 'rgba(0, 169, 129, 0.14)',
-        hasReticle: true,
-      },
-    ]
+    // --- LIGHT MODE STATE: Ambient Constellation Dust Motes + Daylight Wind Streaks ---
+    const moteCount = Math.min(72, Math.max(42, Math.floor((width * height) / 24000)))
+    const motes: DaylightMote[] = Array.from({ length: moteCount }, (_, idx) => {
+      const speed = 0.14 + Math.random() * 0.26
+      const angle = Math.random() * Math.PI * 2
+      return {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        r: 1.0 + Math.random() * 1.5,
+        baseAlpha: 0.16 + Math.random() * 0.22,
+        phase: Math.random() * Math.PI * 2,
+        isAccent: idx % 6 === 0,
+      }
+    })
+
+    const solarStreaks: SolarStreak[] = []
+    let nextStreakTimer = 20
+
+    const spawnSolarStreak = () => {
+      const goRight = Math.random() > 0.3
+      const startX = goRight ? Math.random() * (width * 0.7) : width * 0.25 + Math.random() * (width * 0.7)
+      const startY = Math.random() * (height * 0.65)
+      const deg = goRight ? 16 + Math.random() * 22 : 142 + Math.random() * 22
+      const rad = (deg * Math.PI) / 180
+      const speed = 6.2 + Math.random() * 4.2
+
+      solarStreaks.push({
+        x: startX,
+        y: startY,
+        vx: Math.cos(rad) * speed,
+        vy: Math.sin(rad) * speed,
+        curve: (Math.random() - 0.5) * 0.028,
+        length: 110 + Math.random() * 90,
+        age: 0,
+        maxAge: 54 + Math.floor(Math.random() * 30),
+        width: 1.0 + Math.random() * 0.8,
+        isAccent: Math.random() < 0.45,
+      })
+    }
+
+    spawnSolarStreak()
 
     let tick = 0
-
-    const getOrbitPoint = (
-      cx: number,
-      cy: number,
-      a: number,
-      b: number,
-      tilt: number,
-      theta: number,
-    ) => {
-      const cosT = Math.cos(theta)
-      const sinT = Math.sin(theta)
-      const cosTilt = Math.cos(tilt)
-      const sinTilt = Math.sin(tilt)
-      return {
-        x: cx + a * cosT * cosTilt - b * sinT * sinTilt,
-        y: cy + a * cosT * sinTilt + b * sinT * cosTilt,
-        depth: sinT, // -1 (far) to +1 (near)
-      }
-    }
 
     const renderDark = () => {
       ctx.clearRect(0, 0, width, height)
@@ -243,7 +186,6 @@ export function CosmicBackground({ theme }: { theme: string }) {
       if (nextMeteorTimer <= 0 && shootingStars.length < 3) {
         spawnShootingStar(false)
         if (Math.random() < 0.28) {
-          // Occasional natural twin meteor
           spawnShootingStar(true)
         }
         nextMeteorTimer = 55 + Math.floor(Math.random() * 95)
@@ -258,7 +200,6 @@ export function CosmicBackground({ theme }: { theme: string }) {
         m.age += 1
 
         const progress = m.age / m.maxAge
-        // Smooth ignition ease-in and atmospheric burn-out ease-out
         const lifeAlpha =
           progress < 0.18
             ? progress / 0.18
@@ -273,7 +214,6 @@ export function CosmicBackground({ theme }: { theme: string }) {
         const tailX = m.x - ux * currentLen
         const tailY = m.y - uy * currentLen
 
-        // Tapered glowing wake
         const grad = ctx.createLinearGradient(m.x, m.y, tailX, tailY)
         grad.addColorStop(0, `rgba(255, 255, 255, ${(0.95 * lifeAlpha).toFixed(3)})`)
         grad.addColorStop(0.22, `rgba(${m.tint}, ${(0.65 * lifeAlpha).toFixed(3)})`)
@@ -288,7 +228,6 @@ export function CosmicBackground({ theme }: { theme: string }) {
         ctx.lineTo(tailX, tailY)
         ctx.stroke()
 
-        // Glowing leading head halo
         const headGlow = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, 9)
         headGlow.addColorStop(0, `rgba(255, 255, 255, ${(0.9 * lifeAlpha).toFixed(3)})`)
         headGlow.addColorStop(0.4, `rgba(${m.tint}, ${(0.45 * lifeAlpha).toFixed(3)})`)
@@ -298,7 +237,6 @@ export function CosmicBackground({ theme }: { theme: string }) {
         ctx.arc(m.x, m.y, 9, 0, Math.PI * 2)
         ctx.fill()
 
-        // Bright white nucleus
         ctx.fillStyle = `rgba(255, 255, 255, ${lifeAlpha.toFixed(3)})`
         ctx.beginPath()
         ctx.arc(m.x, m.y, 1.6, 0, Math.PI * 2)
@@ -314,174 +252,112 @@ export function CosmicBackground({ theme }: { theme: string }) {
     const renderLight = () => {
       ctx.clearRect(0, 0, width, height)
 
-      // Position solar center gracefully in the upper-right / center-right field
-      const cx = width * 0.68
-      const cy = Math.min(360, height * 0.36)
-      const scale = Math.max(0.62, Math.min(1.18, Math.min(width, height) / 920))
+      // 1. Update & draw ambient floating dust motes (paper-ink & warm terracotta tones)
+      for (const m of motes) {
+        m.x += m.vx + Math.sin(tick * 0.008 + m.phase) * 0.08
+        m.y += m.vy + Math.cos(tick * 0.008 + m.phase) * 0.06
+        if (m.x < -20) m.x = width + 20
+        if (m.x > width + 20) m.x = -20
+        if (m.y < -20) m.y = height + 20
+        if (m.y > height + 20) m.y = -20
 
-      // Subtle telemetry axis lines through the barycenter
-      ctx.save()
-      ctx.strokeStyle = 'rgba(19, 21, 18, 0.055)'
-      ctx.lineWidth = 1
-      ctx.beginPath()
-      ctx.moveTo(0, cy)
-      ctx.lineTo(width, cy)
-      ctx.moveTo(cx, 0)
-      ctx.lineTo(cx, height)
-      ctx.stroke()
-      ctx.restore()
+        const pulse = Math.sin(tick * 0.025 + m.phase) * 0.08
+        const alpha = Math.max(0.08, Math.min(0.45, m.baseAlpha + pulse))
 
-      // Central Sun / Barycenter node
-      ctx.save()
-      const sunPulse = 1 + Math.sin(tick * 0.025) * 0.06
-      const sunGlow = ctx.createRadialGradient(cx, cy, 2, cx, cy, 44 * scale * sunPulse)
-      sunGlow.addColorStop(0, 'rgba(255, 79, 45, 0.30)')
-      sunGlow.addColorStop(0.45, 'rgba(255, 140, 66, 0.11)')
-      sunGlow.addColorStop(1, 'rgba(255, 79, 45, 0)')
-      ctx.fillStyle = sunGlow
-      ctx.beginPath()
-      ctx.arc(cx, cy, 44 * scale * sunPulse, 0, Math.PI * 2)
-      ctx.fill()
-
-      ctx.fillStyle = '#ff4f2d'
-      ctx.beginPath()
-      ctx.arc(cx, cy, 7.5 * scale, 0, Math.PI * 2)
-      ctx.fill()
-
-      ctx.strokeStyle = 'rgba(255, 79, 45, 0.35)'
-      ctx.lineWidth = 1
-      ctx.beginPath()
-      ctx.arc(cx, cy, 14 * scale, 0, Math.PI * 2)
-      ctx.stroke()
-      ctx.restore()
-
-      // Draw each orbital track + moving planet
-      for (const p of planets) {
-        p.angle = (p.angle + p.speed) % (Math.PI * 2)
-        const a = p.semiMajor * scale
-        const b = p.semiMinor * scale
-
-        // 1. Elliptical orbit path
         ctx.save()
-        ctx.strokeStyle = 'rgba(19, 21, 18, 0.085)'
-        ctx.lineWidth = 1
+        ctx.fillStyle = m.isAccent
+          ? `rgba(255, 79, 45, ${(alpha * 1.15).toFixed(3)})`
+          : `rgba(19, 21, 18, ${alpha.toFixed(3)})`
         ctx.beginPath()
-        ctx.ellipse(cx, cy, a, b, p.tilt, 0, Math.PI * 2)
-        ctx.stroke()
-        ctx.restore()
-
-        // 2. Fading motion trail along the last ~38 degrees of the planet's orbit
-        const trailSteps = 22
-        const trailArc = 0.62
-        for (let s = 0; s < trailSteps; s += 1) {
-          const t0 = p.angle - (s / trailSteps) * trailArc
-          const t1 = p.angle - ((s + 1) / trailSteps) * trailArc
-          const p0 = getOrbitPoint(cx, cy, a, b, p.tilt, t0)
-          const p1 = getOrbitPoint(cx, cy, a, b, p.tilt, t1)
-          const alpha = (1 - s / trailSteps) * 0.42
-
-          ctx.save()
-          ctx.strokeStyle = p.color
-          ctx.globalAlpha = alpha
-          ctx.lineWidth = Math.max(1, (1 - s / trailSteps) * 2.6)
-          ctx.beginPath()
-          ctx.moveTo(p0.x, p0.y)
-          ctx.lineTo(p1.x, p1.y)
-          ctx.stroke()
-          ctx.restore()
-        }
-
-        // 3. Planet position & 3D perspective depth scaling
-        const pos = getOrbitPoint(cx, cy, a, b, p.tilt, p.angle)
-        const depthScale = 0.86 + 0.22 * ((pos.depth + 1) / 2)
-        const r = p.radius * scale * depthScale
-
-        // Soft atmospheric halo
-        ctx.save()
-        ctx.fillStyle = p.atmosphere
-        ctx.beginPath()
-        ctx.arc(pos.x, pos.y, r * 2.05, 0, Math.PI * 2)
+        ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2)
         ctx.fill()
         ctx.restore()
+      }
 
-        // Back half of planetary rings (if ringed gas giant)
-        if (p.hasRings && p.ringColor) {
-          ctx.save()
-          ctx.strokeStyle = p.ringColor
-          ctx.lineWidth = 2.4 * scale
-          ctx.beginPath()
-          ctx.ellipse(pos.x, pos.y, r * 2.25, r * 0.72, p.tilt + 0.18, Math.PI, Math.PI * 2)
-          ctx.stroke()
-          ctx.restore()
-        }
-
-        // Planet body with spherical day/night illumination pointing toward the Sun (cx, cy)
-        const sunAngle = Math.atan2(cy - pos.y, cx - pos.x)
-        const lightX = pos.x + Math.cos(sunAngle) * (r * 0.38)
-        const lightY = pos.y + Math.sin(sunAngle) * (r * 0.38)
-        const bodyGrad = ctx.createRadialGradient(lightX, lightY, r * 0.1, pos.x, pos.y, r * 1.15)
-        bodyGrad.addColorStop(0, p.color)
-        bodyGrad.addColorStop(0.72, p.color)
-        bodyGrad.addColorStop(1, p.shadowColor)
-
-        ctx.save()
-        ctx.fillStyle = bodyGrad
-        ctx.beginPath()
-        ctx.arc(pos.x, pos.y, r, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.restore()
-
-        // Front half of planetary rings crossing in front of the sphere
-        if (p.hasRings && p.ringColor) {
-          ctx.save()
-          ctx.strokeStyle = p.ringColor
-          ctx.lineWidth = 2.6 * scale
-          ctx.beginPath()
-          ctx.ellipse(pos.x, pos.y, r * 2.25, r * 0.72, p.tilt + 0.18, 0, Math.PI)
-          ctx.stroke()
-          ctx.restore()
-        }
-
-        // Optional telemetry reticle around planet
-        if (p.hasReticle) {
-          ctx.save()
-          ctx.strokeStyle = 'rgba(0, 169, 129, 0.38)'
-          ctx.lineWidth = 1
-          ctx.setLineDash([3, 3])
-          ctx.beginPath()
-          ctx.arc(pos.x, pos.y, r * 1.65, 0, Math.PI * 2)
-          ctx.stroke()
-          ctx.restore()
-        }
-
-        // Orbiting Moons
-        if (p.moons) {
-          for (const moon of p.moons) {
-            moon.phase = (moon.phase + moon.speed) % (Math.PI * 2)
-            const mx = pos.x + Math.cos(moon.phase) * (moon.distance * scale * depthScale)
-            const my = pos.y + Math.sin(moon.phase) * (moon.distance * 0.58 * scale * depthScale)
-
-            ctx.save()
-            ctx.strokeStyle = 'rgba(19, 21, 18, 0.11)'
-            ctx.lineWidth = 0.8
+      // 2. Delicate hairline constellation filaments between nearby motes
+      const maxDist = 135
+      ctx.save()
+      ctx.lineWidth = 0.65
+      for (let i = 0; i < motes.length; i += 1) {
+        const a = motes[i]
+        for (let j = i + 1; j < motes.length; j += 1) {
+          const b = motes[j]
+          const dx = a.x - b.x
+          const dy = a.y - b.y
+          if (Math.abs(dx) > maxDist || Math.abs(dy) > maxDist) continue
+          const dist = Math.hypot(dx, dy)
+          if (dist < maxDist) {
+            const lineAlpha = (1 - dist / maxDist) * 0.075
+            ctx.strokeStyle =
+              a.isAccent || b.isAccent
+                ? `rgba(255, 79, 45, ${(lineAlpha * 1.1).toFixed(3)})`
+                : `rgba(19, 21, 18, ${lineAlpha.toFixed(3)})`
             ctx.beginPath()
-            ctx.ellipse(
-              pos.x,
-              pos.y,
-              moon.distance * scale * depthScale,
-              moon.distance * 0.58 * scale * depthScale,
-              0,
-              0,
-              Math.PI * 2,
-            )
+            ctx.moveTo(a.x, a.y)
+            ctx.lineTo(b.x, b.y)
             ctx.stroke()
-
-            ctx.fillStyle = moon.color
-            ctx.beginPath()
-            ctx.arc(mx, my, moon.radius * scale * depthScale, 0, Math.PI * 2)
-            ctx.fill()
-            ctx.restore()
           }
+        }
+      }
+      ctx.restore()
+
+      // 3. Daylight solar-wind streaks (light-mode counterpart to shooting stars)
+      nextStreakTimer -= 1
+      if (nextStreakTimer <= 0 && solarStreaks.length < 3) {
+        spawnSolarStreak()
+        if (Math.random() < 0.25) {
+          spawnSolarStreak()
+        }
+        nextStreakTimer = 50 + Math.floor(Math.random() * 85)
+      }
+
+      for (let i = solarStreaks.length - 1; i >= 0; i -= 1) {
+        const s = solarStreaks[i]
+        s.x += s.vx
+        s.y += s.vy
+        s.vy += s.curve
+        s.age += 1
+
+        const progress = s.age / s.maxAge
+        const lifeAlpha =
+          progress < 0.2
+            ? progress / 0.2
+            : progress > 0.72
+              ? Math.max(0, (1 - progress) / 0.28)
+              : 1
+
+        const speedMag = Math.hypot(s.vx, s.vy) || 1
+        const ux = s.vx / speedMag
+        const uy = s.vy / speedMag
+        const currentLen = s.length * (0.55 + 0.45 * Math.sin(progress * Math.PI))
+        const tailX = s.x - ux * currentLen
+        const tailY = s.y - uy * currentLen
+
+        const rgb = s.isAccent ? '255, 79, 45' : '19, 21, 18'
+        const peakAlpha = (s.isAccent ? 0.38 : 0.24) * lifeAlpha
+        const grad = ctx.createLinearGradient(s.x, s.y, tailX, tailY)
+        grad.addColorStop(0, `rgba(${rgb}, ${peakAlpha.toFixed(3)})`)
+        grad.addColorStop(0.35, `rgba(${rgb}, ${(peakAlpha * 0.55).toFixed(3)})`)
+        grad.addColorStop(1, `rgba(${rgb}, 0)`)
+
+        ctx.save()
+        ctx.strokeStyle = grad
+        ctx.lineWidth = s.width
+        ctx.lineCap = 'round'
+        ctx.beginPath()
+        ctx.moveTo(s.x, s.y)
+        ctx.lineTo(tailX, tailY)
+        ctx.stroke()
+
+        // Subtle leading glider point
+        ctx.fillStyle = `rgba(${rgb}, ${(peakAlpha * 1.25).toFixed(3)})`
+        ctx.beginPath()
+        ctx.arc(s.x, s.y, 1.35, 0, Math.PI * 2)
+        ctx.fill()
+        ctx.restore()
+
+        if (s.age >= s.maxAge || s.x < -250 || s.x > width + 250 || s.y < -250 || s.y > height + 250) {
+          solarStreaks.splice(i, 1)
         }
       }
     }
