@@ -1,4 +1,7 @@
 {
   "title": "Engineering Docs Portal",
-  "description": "Technical references, integration guides, and operational documentation across engineering projects."
+  "description": "Technical references, integration guides, and operational documentation across engineering projects.",
+  "icons": {
+    "icon": "favicon.svg"
+  }
 }

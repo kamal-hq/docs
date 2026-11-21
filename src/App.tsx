@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { CosmicBackground } from './components/CosmicBackground'
 import { categories, portalConfig, projects, type Project } from './data/projects'
 import {
   getDocMetrics,
@@ -24,6 +25,7 @@ type IconName =
   | 'convert'
   | 'orbit'
   | 'signal'
+  | 'github'
 
 const BASE_PATH = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '')
 
@@ -95,6 +97,9 @@ function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
       </>
     ),
     signal: <path d="M4 18V9M9 18V5M14 18v-7M19 18V3" />,
+    github: (
+      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4M9 18c-4.51 2-5-2-7-2" />
+    ),
   }
   return (
     <svg
@@ -263,6 +268,15 @@ function TopNav({
           <kbd>⌘ K</kbd>
         </button>
         <span className="nav-rule" />
+        <a
+          className="icon-button"
+          href="https://github.com/kamal-hq/docs"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="View GitHub repository"
+        >
+          <Icon name="github" size={17} />
+        </a>
         <ThemeButton theme={theme} toggle={toggleTheme} />
       </div>
     </header>
@@ -601,6 +615,15 @@ function DocsTopbar({
           <span>Search docs</span>
           <kbd>⌘ K</kbd>
         </button>
+        <a
+          className="icon-button"
+          href={project.repoUrl || 'https://github.com/kamal-hq/docs'}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="View project GitHub repository"
+        >
+          <Icon name="github" size={16} />
+        </a>
         <ThemeButton theme={theme} toggle={toggleTheme} />
       </div>
     </header>
@@ -913,6 +936,7 @@ export default function App() {
 
   return (
     <>
+      <CosmicBackground theme={theme} />
       {slug ? (
         project ? (
           <Docs

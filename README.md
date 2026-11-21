@@ -1,6 +1,9 @@
 # Engineering Documentation Portal (`docs`)
 
-Centralized technical documentation portal for projects built and maintained by **Muhammad Kamal**, engineered for dual deployment on **GitHub Pages** (`github.io/docs/`) and **Vercel** (`/`).
+Centralized technical documentation portal for projects built and maintained by **Muhammad Kamal**, deployed live on both **Vercel** and **GitHub Pages**:
+
+- **Live Portal (Vercel):** [https://docs-kamal.vercel.app/](https://docs-kamal.vercel.app/)
+- **Live Portal (GitHub Pages):** [https://kamal-hq.github.io/docs/](https://kamal-hq.github.io/docs/)
 
 ---
 
@@ -63,5 +66,5 @@ pnpm run sync -- --owner=kamal-hq --all
 
 ## Dual Deployment (GitHub Pages + Vercel)
 
-- **Vercel (`/`)**: Deployed directly from the repository root using [vercel.json](vercel.json) SPA rewrites.
-- **GitHub Pages (`/docs/` or `*.github.io`)**: Deployed automatically on push to `main` via [.github/workflows/deploy.yml](.github/workflows/deploy.yml), which sets `BASE_PATH` from the repository name and emits `dist/404.html` for client-side route resolution.
+- **Vercel ([https://docs-kamal.vercel.app/](https://docs-kamal.vercel.app/))**: Deployed directly from the repository root using [vercel.json](vercel.json) SPA rewrites.
+- **GitHub Pages ([https://kamal-hq.github.io/docs/](https://kamal-hq.github.io/docs/))**: Deployed automatically on push to `main` via [.github/workflows/deploy.yml](.github/workflows/deploy.yml), which sets `BASE_PATH` from the repository name and emits `dist/404.html` for client-side route resolution.

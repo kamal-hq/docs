@@ -95,10 +95,11 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration, basePath = '/'):
   const description = config.description ?? ''
   // Imported HTML keeps its own favicon. New Makes use PNG because Google Search does not
   // support SVG favicons, even though browsers do.
-  const rawFavicon = config.icons?.icon ?? 'favicon.png'
+  const rawFavicon = config.icons?.icon ?? 'favicon.svg'
   const favicon = /^https?:\/\//.test(rawFavicon)
     ? rawFavicon
     : `${basePath}${rawFavicon.replace(/^\/+/, '')}`
+  const pngFavicon = `${basePath}favicon.png`
   const socialImage = config.openGraph?.image ?? ''
   const language = sanitizeHtmlValue(config.language) || 'en'
   const googleAnalyticsId = sanitizeHtmlValue(config.analytics?.googleAnalyticsId)
@@ -146,7 +147,23 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration, basePath = '/'):
           tags.push({ tag: 'meta', attrs: { name: 'robots', content: 'noindex, nofollow' }, injectTo: 'head' })
         }
         if (favicon) {
-          tags.push({ tag: 'link', attrs: { rel: 'icon', href: favicon }, injectTo: 'head' })
+          const isSvg = favicon.endsWith('.svg')
+          tags.push({
+            tag: 'link',
+            attrs: {
+              rel: 'icon',
+              ...(isSvg ? { type: 'image/svg+xml' } : { type: 'image/png' }),
+              href: favicon,
+            },
+            injectTo: 'head',
+          })
+          if (isSvg) {
+            tags.push({
+              tag: 'link',
+              attrs: { rel: 'alternate icon', type: 'image/png', href: pngFavicon },
+              injectTo: 'head',
+            })
+          }
         }
         if (title) {
           tags.push({ tag: 'meta', attrs: { property: 'og:title', content: title }, injectTo: 'head' })
