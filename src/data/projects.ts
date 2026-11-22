@@ -12,8 +12,9 @@ export type Project = {
   tags: string[]
   category: 'Intelligence' | 'Tools' | 'Infrastructure' | 'Data'
   accent: string
-  glyph: 'spark' | 'convert' | 'orbit' | 'signal'
+  glyph: 'spark' | 'convert' | 'orbit' | 'signal' | 'lens' | 'keyboard'
   repoUrl?: string
+  liveUrl?: string
 }
 
 export const portalConfig = {
@@ -45,6 +46,7 @@ export const manualProjects: Project[] = [
     accent: '#ff5c35',
     glyph: 'spark',
     repoUrl: 'https://github.com/kamal-hq/ascend-ai',
+    liveUrl: 'https://ascend-ai-sandy.vercel.app/',
   },
   {
     slug: 'deskconvert',
@@ -59,6 +61,37 @@ export const manualProjects: Project[] = [
     accent: '#2b6dff',
     glyph: 'convert',
     repoUrl: 'https://github.com/kamal-hq/DeskConvert',
+    liveUrl: 'https://desk-convert.vercel.app/',
+  },
+  {
+    slug: 'adlens-pk',
+    code: 'L-02',
+    title: 'AdLens PK',
+    version: 'v2.0.0',
+    status: 'Production',
+    summary:
+      'Zero-garbage longitudinal Pakistani Meta Ad Library intelligence engine tracking COD, Open-Parcel trust, WhatsApp funnels, PKR pricing, and 30+ day creative survival.',
+    tags: ['Playwright', 'Supabase', 'React 19', 'Vercel API', 'Gemini 2.5'],
+    category: 'Data',
+    accent: '#e89422',
+    glyph: 'lens',
+    repoUrl: 'https://github.com/kamal-hq/adlens-pk',
+    liveUrl: 'https://adlens-pk.vercel.app/',
+  },
+  {
+    slug: 'typesimulator',
+    code: 'T-02',
+    title: 'TypeSimulator',
+    version: 'v2.0.0',
+    status: 'Production',
+    summary:
+      'OS-level humanized keystroke automation studio for Windows with log-normal biomechanical cadence, QWERTY typo simulation, Win32 Focus Guard, and an interactive browser sandbox.',
+    tags: ['Python 3.10+', 'PyWebView', 'Win32 ctypes', 'React 19', 'pynput'],
+    category: 'Tools',
+    accent: '#06b6d4',
+    glyph: 'keyboard',
+    repoUrl: 'https://github.com/kamal-hq/TypeSimulator',
+    liveUrl: 'https://typesimulator-frontend.vercel.app/',
   },
   {
     slug: 'sec-13f-analyzer',
@@ -103,6 +136,7 @@ function mergeProjects(manual: Project[], synced: Project[]): Project[] {
     merged.push({
       ...item,
       repoUrl: item.repoUrl ?? syncedMatch?.repoUrl,
+      liveUrl: item.liveUrl ?? syncedMatch?.liveUrl,
     })
   }
 

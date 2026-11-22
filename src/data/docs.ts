@@ -1,8 +1,10 @@
 import { projects, type Project } from './projects'
+import { adlensPkDocs } from './projects/adlens-pk'
 import { ascendAiDocs } from './projects/ascend-ai'
 import { deskConvertDocs } from './projects/deskconvert'
 import { sec13fAnalyzerDocs } from './projects/sec-13f-analyzer'
 import { sec13fAutopilotDocs } from './projects/sec-13f-autopilot'
+import { typeSimulatorDocs } from './projects/typesimulator'
 import syncedDocsJson from './synced/docs.json'
 
 export type DocBlock =
@@ -42,6 +44,8 @@ export type ProjectDocumentation = {
 const projectDocsRegistry: Record<string, ProjectDocumentation> = {
   'ascend-ai': ascendAiDocs,
   deskconvert: deskConvertDocs,
+  'adlens-pk': adlensPkDocs,
+  typesimulator: typeSimulatorDocs,
   'sec-13f-analyzer': sec13fAnalyzerDocs,
   'sec-13f-autopilot': sec13fAutopilotDocs,
 }

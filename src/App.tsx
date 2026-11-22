@@ -25,6 +25,8 @@ type IconName =
   | 'convert'
   | 'orbit'
   | 'signal'
+  | 'lens'
+  | 'keyboard'
   | 'github'
 
 const BASE_PATH = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '')
@@ -97,6 +99,19 @@ function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
       </>
     ),
     signal: <path d="M4 18V9M9 18V5M14 18v-7M19 18V3" />,
+    lens: (
+      <>
+        <circle cx="12" cy="12" r="8" />
+        <circle cx="12" cy="12" r="3" />
+        <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+      </>
+    ),
+    keyboard: (
+      <>
+        <rect x="2.5" y="5.5" width="19" height="13" rx="2" />
+        <path d="M6.5 9.5h.01M10 9.5h.01M13.5 9.5h.01M17 9.5h.01M6.5 13h.01M17 13h.01M9.5 15h5" />
+      </>
+    ),
     github: (
       <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4M9 18c-4.51 2-5-2-7-2" />
     ),
@@ -291,7 +306,21 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     >
       <div className="card-top">
         <ProjectGlyph project={project} />
-        <span className="project-code">{project.code}</span>
+        <div className="card-top-meta">
+          {project.liveUrl && (
+            <a
+              className="live-pill"
+              href={project.liveUrl}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span className="pulse" />
+              LIVE ↗
+            </a>
+          )}
+          <span className="project-code">{project.code}</span>
+        </div>
       </div>
       <div className="card-heading">
         <div>
@@ -615,6 +644,17 @@ function DocsTopbar({
           <span>Search docs</span>
           <kbd>⌘ K</kbd>
         </button>
+        {project.liveUrl && (
+          <a
+            className="live-topbar-btn"
+            href={project.liveUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="pulse" />
+            <span>LIVE APP ↗</span>
+          </a>
+        )}
         <a
           className="icon-button"
           href={project.repoUrl || 'https://github.com/kamal-hq/docs'}
@@ -694,6 +734,11 @@ function LeftSidebar({
       <div className="sidebar-meta">
         <span>DOCUMENT VERSION</span>
         <strong>{project.version}</strong>
+        {project.liveUrl && (
+          <a className="sidebar-live" href={project.liveUrl} target="_blank" rel="noreferrer">
+            LAUNCH LIVE APP ↗
+          </a>
+        )}
         {project.repoUrl && (
           <a className="sidebar-repo" href={project.repoUrl} target="_blank" rel="noreferrer">
             VIEW REPOSITORY ↗

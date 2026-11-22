@@ -19,6 +19,12 @@ export const deskConvertDocs: ProjectDocumentation = {
           title: 'Why DeskConvert uses a dual-runtime split',
           blocks: [
             {
+              type: 'callout',
+              variant: 'note',
+              title: 'LIVE WEB STUDIO',
+              text: 'Use DeskConvert directly in your browser (zero server uploads, 100% WASM) at https://desk-convert.vercel.app/.',
+            },
+            {
               type: 'paragraph',
               text: 'Traditional online file converters upload sensitive documents to remote servers, while serverless functions on platforms like Vercel cap request payloads at ~4.5 MB and lack native C/C++ binaries like Poppler and Tesseract. DeskConvert solves both problems by pairing one shared React 19 + TypeScript studio UI with two local execution engines:',
             },

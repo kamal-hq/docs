@@ -9,12 +9,14 @@ Centralized technical documentation portal for projects built and maintained by 
 
 ## Documented Systems
 
-| Code | System | Version | Category | Repository |
-| :--- | :--- | :--- | :--- | :--- |
-| **A-03** | **Ascend AI** | `v3.0` | Intelligence | [kamal-hq/ascend-ai](https://github.com/kamal-hq/ascend-ai) |
-| **D-02** | **DeskConvert** | `v2.0.0` | Tools | [kamal-hq/DeskConvert](https://github.com/kamal-hq/DeskConvert) |
-| **S-01** | **SEC 13F Analyzer** | `v1.1.0` | Data | [kamal-hq/sec_13f_analyzer](https://github.com/kamal-hq/sec_13f_analyzer) |
-| **S-02** | **SEC 13F Autopilot** | `v0.1.0` | Infrastructure | [kamal-hq/sec_13f_autopilot](https://github.com/kamal-hq/sec_13f_autopilot) |
+| Code | System | Version | Category | Live App | Repository |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **A-03** | **Ascend AI** | `v3.0` | Intelligence | [ascend-ai-sandy.vercel.app](https://ascend-ai-sandy.vercel.app/) | [kamal-hq/ascend-ai](https://github.com/kamal-hq/ascend-ai) |
+| **D-02** | **DeskConvert** | `v2.0.0` | Tools | [desk-convert.vercel.app](https://desk-convert.vercel.app/) | [kamal-hq/DeskConvert](https://github.com/kamal-hq/DeskConvert) |
+| **L-02** | **AdLens PK** | `v2.0.0` | Data | [adlens-pk.vercel.app](https://adlens-pk.vercel.app/) | [kamal-hq/adlens-pk](https://github.com/kamal-hq/adlens-pk) |
+| **T-02** | **TypeSimulator** | `v2.0.0` | Tools | [typesimulator-frontend.vercel.app](https://typesimulator-frontend.vercel.app/) | [kamal-hq/TypeSimulator](https://github.com/kamal-hq/TypeSimulator) |
+| **S-01** | **SEC 13F Analyzer** | `v1.1.0` | Data | — | [kamal-hq/sec_13f_analyzer](https://github.com/kamal-hq/sec_13f_analyzer) |
+| **S-02** | **SEC 13F Autopilot** | `v0.1.0` | Infrastructure | — | [kamal-hq/sec_13f_autopilot](https://github.com/kamal-hq/sec_13f_autopilot) |
 
 ---
 
