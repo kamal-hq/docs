@@ -15,6 +15,8 @@ Centralized technical documentation portal for projects built and maintained by 
 | **D-02** | **DeskConvert** | `v2.0.0` | Tools | [desk-convert.vercel.app](https://desk-convert.vercel.app/) | [kamal-hq/DeskConvert](https://github.com/kamal-hq/DeskConvert) |
 | **L-02** | **AdLens PK** | `v2.0.0` | Data | [adlens-pk.vercel.app](https://adlens-pk.vercel.app/) | [kamal-hq/adlens-pk](https://github.com/kamal-hq/adlens-pk) |
 | **T-02** | **TypeSimulator** | `v2.0.0` | Tools | [typesimulator-frontend.vercel.app](https://typesimulator-frontend.vercel.app/) | [kamal-hq/TypeSimulator](https://github.com/kamal-hq/TypeSimulator) |
+| **C-01** | **Cadence** | `v1.0.0` | Tools | [kamal-cadence.vercel.app](https://kamal-cadence.vercel.app/) | [kamal-hq/cadence](https://github.com/kamal-hq/cadence) |
+| **P-03** | **ProspectIQ** | `v3.0.0` | Data | [kamal-prospectiq.vercel.app](https://kamal-prospectiq.vercel.app/) | [kamal-hq/prospectiq](https://github.com/kamal-hq/prospectiq) |
 | **S-01** | **SEC 13F Analyzer** | `v1.1.0` | Data | — | [kamal-hq/sec_13f_analyzer](https://github.com/kamal-hq/sec_13f_analyzer) |
 | **S-02** | **SEC 13F Autopilot** | `v0.1.0` | Infrastructure | — | [kamal-hq/sec_13f_autopilot](https://github.com/kamal-hq/sec_13f_autopilot) |
 

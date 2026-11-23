@@ -12,7 +12,7 @@ export type Project = {
   tags: string[]
   category: 'Intelligence' | 'Tools' | 'Infrastructure' | 'Data'
   accent: string
-  glyph: 'spark' | 'convert' | 'orbit' | 'signal' | 'lens' | 'keyboard'
+  glyph: 'spark' | 'convert' | 'orbit' | 'signal' | 'lens' | 'keyboard' | 'cadence' | 'radar'
   repoUrl?: string
   liveUrl?: string
 }
@@ -92,6 +92,36 @@ export const manualProjects: Project[] = [
     glyph: 'keyboard',
     repoUrl: 'https://github.com/kamal-hq/TypeSimulator',
     liveUrl: 'https://typesimulator-frontend.vercel.app/',
+  },
+  {
+    slug: 'cadence',
+    code: 'C-01',
+    title: 'Cadence',
+    version: 'v1.0.0',
+    status: 'Production',
+    summary:
+      'Full-stack personal productivity, @dnd-kit Kanban, analytics, and calendar-scheduling web app with isolated multi-schema Supabase RLS, AES-256-GCM Google Calendar 2-way sync, and Zod-validated JSON portability.',
+    tags: ['Next.js 15', 'React 19', 'Supabase RLS', '@dnd-kit', 'Google Calendar'],
+    category: 'Tools',
+    accent: '#2c99d6',
+    glyph: 'cadence',
+    repoUrl: 'https://github.com/kamal-hq/cadence',
+    liveUrl: 'https://kamal-cadence.vercel.app/',
+  },
+  {
+    slug: 'prospectiq',
+    code: 'P-03',
+    title: 'ProspectIQ',
+    version: 'v3.0.0',
+    status: 'Production',
+    summary:
+      'Automated B2B agency prospecting and web-presence intelligence engine with Chrome TLS stealth routing, Free-First MX-verified contact waterfalls, 0–100 opportunity scoring, and real-time Supabase cloud dashboards.',
+    tags: ['Python 3.12', 'curl_cffi', 'Supabase Realtime', 'React 19', 'GitHub Actions'],
+    category: 'Data',
+    accent: '#6366f1',
+    glyph: 'radar',
+    repoUrl: 'https://github.com/kamal-hq/prospectiq',
+    liveUrl: 'https://kamal-prospectiq.vercel.app/',
   },
   {
     slug: 'sec-13f-analyzer',

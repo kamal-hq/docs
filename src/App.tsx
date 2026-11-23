@@ -27,6 +27,8 @@ type IconName =
   | 'signal'
   | 'lens'
   | 'keyboard'
+  | 'cadence'
+  | 'radar'
   | 'github'
 
 const BASE_PATH = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '')
@@ -110,6 +112,21 @@ function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
       <>
         <rect x="2.5" y="5.5" width="19" height="13" rx="2" />
         <path d="M6.5 9.5h.01M10 9.5h.01M13.5 9.5h.01M17 9.5h.01M6.5 13h.01M17 13h.01M9.5 15h5" />
+      </>
+    ),
+    cadence: (
+      <g transform="rotate(-3 12 12)">
+        <rect x="4" y="8" width="3.6" height="12" rx="1.8" />
+        <rect x="10.2" y="3" width="3.6" height="17" rx="1.8" />
+        <rect x="16.4" y="6" width="3.6" height="14" rx="1.8" />
+      </g>
+    ),
+    radar: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <circle cx="12" cy="12" r="4.5" />
+        <path d="M12 12 18.4 5.6" />
+        <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" />
       </>
     ),
     github: (

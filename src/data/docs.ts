@@ -1,7 +1,9 @@
 import { projects, type Project } from './projects'
 import { adlensPkDocs } from './projects/adlens-pk'
 import { ascendAiDocs } from './projects/ascend-ai'
+import { cadenceDocs } from './projects/cadence'
 import { deskConvertDocs } from './projects/deskconvert'
+import { prospectIqDocs } from './projects/prospectiq'
 import { sec13fAnalyzerDocs } from './projects/sec-13f-analyzer'
 import { sec13fAutopilotDocs } from './projects/sec-13f-autopilot'
 import { typeSimulatorDocs } from './projects/typesimulator'
@@ -46,6 +48,8 @@ const projectDocsRegistry: Record<string, ProjectDocumentation> = {
   deskconvert: deskConvertDocs,
   'adlens-pk': adlensPkDocs,
   typesimulator: typeSimulatorDocs,
+  cadence: cadenceDocs,
+  prospectiq: prospectIqDocs,
   'sec-13f-analyzer': sec13fAnalyzerDocs,
   'sec-13f-autopilot': sec13fAutopilotDocs,
 }
